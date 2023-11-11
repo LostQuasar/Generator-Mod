@@ -50,7 +50,6 @@ public class GeneratorScreenHandler extends ScreenHandler {
     }
 
     public int getScaledPercentage() {
-        GeneratorMod.LOGGER.info("getScaledPercentage values: " + propertyDelegate.get(0) + " " + propertyDelegate.get(1));
         int i = propertyDelegate.get(0);
         int j = propertyDelegate.get(1);
         return j != 0 && i != 0 ? i * 100 / j : 0;

@@ -41,7 +41,7 @@ public class GeneratorScreen extends HandledScreen<GeneratorScreenHandler> {
         int textX = x + (backgroundWidth - textWidth) / 2;
         int textY = y + 40;
 
-        context.drawText(textRenderer, progress + "%", textX, textY, 0x8B8B8B, false);
+        context.drawText(textRenderer, progress + "%", textX, textY, 0x3F3F3F, false);
 
     }
 
