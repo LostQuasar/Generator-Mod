@@ -40,6 +40,8 @@ public class GeneratorScreenHandler extends ScreenHandler {
         this.addProperties(arrayPropertyDelegate);
     }
 
+    public boolean isDisabled() { return propertyDelegate.get(2) > 0; }
+
     public boolean isCrafting() { return propertyDelegate.get(0) > 0; }
 
     public int getScaledProgress() {

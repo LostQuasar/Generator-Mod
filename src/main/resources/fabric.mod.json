@@ -1,18 +1,18 @@
 {
 	"schemaVersion": 1,
-	"id": "generatormod",
+	"id": "generator",
 	"version": "${version}",
-	"name": "GeneratorMod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Generator",
+	"description": "A generator block that creates things like cobblestone from lava and water. Supports custom recipes.",
 	"authors": [
-		"Me!"
+		"Furia"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/FuriaPaladins/Generator-Mod"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/generatormod/icon.png",
+	"icon": "assets/generator/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
@@ -25,9 +25,6 @@
 			"net.furia.generator.GeneratorModDataGenerator"
 		]
 	},
-	"mixins": [
-		"generatormod.mixins.json"
-	],
 	"depends": {
 		"fabricloader": ">=0.14.24",
 		"minecraft": "~1.20.1",

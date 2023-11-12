@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class ModBlocks {
     public static final Block GENERATOR_BLOCK = registerBlock("generator",
-            new GeneratorBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).nonOpaque()));
+            new GeneratorBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE).nonOpaque()));
 
     public static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

@@ -5,12 +5,13 @@ import net.furia.generator.GeneratorMod;
 import net.furia.generator.recipe.GeneratorRecipes;
 import net.furia.generator.screen.GeneratorScreenHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.PropertyDelegate;
@@ -35,6 +36,11 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
     private int maxProgress = 1;
+    private int isDisabled = 0;
+
+    private static final int[] TOP_SLOTS = new int[]{0};
+    private static final int[] BOTTOM_SLOTS = new int[]{2, 1};
+    private static final int[] SIDE_SLOTS = new int[]{1};
 
     public GeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.GENERATOR_BLOCK_ENTITY, pos, state);
@@ -44,6 +50,7 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
                 return switch (index) {
                     case 0 -> GeneratorBlockEntity.this.progress;
                     case 1 -> GeneratorBlockEntity.this.maxProgress;
+                    case 2 -> GeneratorBlockEntity.this.isDisabled;
                     default -> 0;
                 };
             }
@@ -53,12 +60,13 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
                 switch (index) {
                     case 0 -> GeneratorBlockEntity.this.progress = value;
                     case 1 -> GeneratorBlockEntity.this.maxProgress = value;
+                    case 2 -> GeneratorBlockEntity.this.isDisabled = value;
                 }
             }
 
             @Override
             public int size() {
-                return 2;
+                return 3;
             }
         };
     }
@@ -70,7 +78,7 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     public Text getDisplayName() {
-        return Text.literal("Generator");
+        return Text.translatable("block.generator.generator");
     }
 
     @Nullable
@@ -98,24 +106,58 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
         super.readNbt(nbt);
     }
 
-    public void tick(World world, BlockPos pos, BlockState state) {
-         if(canInsertIntoOutputSlot() && hasRecipe()) {
-             this.maxProgress = getCurrentRecipe().get().getTime();
-             increaseCraftingProgress();
-             markDirty(world, pos, state);
 
-             if(hasCraftingFinished()) {
-                 craftItem();
-                 resetProgress();
-             }
-         } else {
-             resetProgress();
-         }
+    public void tick(World world, BlockPos pos, BlockState state) {
+
+        // check if it's client. (don't run)
+        if (world.isClient()) {
+            return;
+        }
+
+        // Check if it's receiving redstone power
+        if (world.isReceivingRedstonePower(pos)) {
+            disableBlock();
+        } else {
+            enableBlock();
+        }
+
+        // set max progress
+        if (hasRecipe()) {
+            Optional<GeneratorRecipes> recipe = getCurrentRecipe();
+            this.maxProgress = recipe.get().getTime();
+        } else {
+            resetProgress();
+        }
+
+        // recipe logic
+        if(canInsertIntoOutputSlot() && hasRecipe()) {
+            increaseCraftingProgress();
+            markDirty(world, pos, state);
+
+            if(hasCraftingFinished()) {
+                craftItem();
+                resetProgress();
+            }
+        } else {
+            resetProgress();
+        }
     }
 
     private void resetProgress() {
         this.progress = 0;
         this.maxProgress = 20;
+    }
+
+    public void disableBlock() {
+        this.isDisabled = 1;
+    }
+
+    public void enableBlock() {
+        this.isDisabled = 0;
+    }
+
+    private boolean getIsDisabled() {
+        return this.isDisabled == 1;
     }
 
     private void craftItem() {
@@ -134,7 +176,9 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
     }
 
     private void increaseCraftingProgress() {
-        this.progress++;
+        if (!getIsDisabled()) {
+            this.progress++;
+        }
     }
 
     private boolean hasRecipe() {
@@ -179,6 +223,25 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
         return slot == 2;
+    }
+
+    @Override
+    public int size() {
+        return this.inventory.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (ItemStack itemStack : this.inventory) {
+            if (itemStack.isEmpty()) continue;
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction side) {
+        return new int[]{2};
     }
 
 }

@@ -43,6 +43,15 @@ public class GeneratorScreen extends HandledScreen<GeneratorScreenHandler> {
 
         context.drawText(textRenderer, progress + "%", textX, textY, 0x3F3F3F, false);
 
+        // write if disabled
+        if (handler.isDisabled()) {
+            Text disabledText = Text.of("Disabled");
+            int disabledTextWidth = textRenderer.getWidth(disabledText);
+            int disabledTextX = x + (backgroundWidth - disabledTextWidth) / 2;
+            int disabledTextY = y + 16;
+            context.drawText(textRenderer, disabledText, disabledTextX, disabledTextY, 0x3F3F3F, false);
+        }
+
     }
 
     @Override
