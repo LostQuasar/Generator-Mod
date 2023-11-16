@@ -4,8 +4,6 @@ import net.fabricmc.api.ModInitializer;
 
 import net.furia.generator.block.ModBlocks;
 import net.furia.generator.block.entity.ModBlockEntities;
-import net.furia.generator.item.ModItemGroup;
-import net.furia.generator.item.ModItems;
 import net.furia.generator.recipe.ModRecipes;
 import net.furia.generator.screen.ModScreenHandlers;
 import org.slf4j.Logger;
@@ -17,12 +15,10 @@ public class GeneratorMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModItems.registerModItems();
 
 		ModBlocks.registerModBlocks();
 		ModBlockEntities.registerBlockEntities();
 		// register item group
-		ModItemGroup.registerItemGroups();
 		ModScreenHandlers.registerScreenHandler();
 		ModRecipes.registerRecipes();
 	}
