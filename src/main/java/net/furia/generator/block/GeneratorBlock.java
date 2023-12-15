@@ -17,15 +17,11 @@ import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
-public class GeneratorBlock extends BlockWithEntity implements BlockEntityProvider {
+public class GeneratorBlock extends BlockWithEntity {
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
-    private static final VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 16, 16);
 
     public GeneratorBlock(Settings settings) {
         super(settings);

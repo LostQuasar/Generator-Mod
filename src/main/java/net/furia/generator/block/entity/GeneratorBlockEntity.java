@@ -1,7 +1,6 @@
 package net.furia.generator.block.entity;
 
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.furia.generator.GeneratorMod;
 import net.furia.generator.recipe.GeneratorRecipes;
 import net.furia.generator.screen.GeneratorScreenHandler;
 import net.minecraft.block.BlockState;
@@ -11,7 +10,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.PropertyDelegate;
@@ -28,19 +26,13 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
-    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
-    private static final int INPUT_SLOT_1 = 0;
-    private static final int INPUT_SLOT_2 = 1;
-    private static final int OUTPUT_SLOT = 2;
+    private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
+    private static final int OUTPUT_SLOT = 3;
 
     protected final PropertyDelegate propertyDelegate;
     private int progress = 0;
     private int maxProgress = 1;
     private int isDisabled = 0;
-
-    private static final int[] TOP_SLOTS = new int[]{0};
-    private static final int[] BOTTOM_SLOTS = new int[]{2, 1};
-    private static final int[] SIDE_SLOTS = new int[]{1};
 
     public GeneratorBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.GENERATOR_BLOCK_ENTITY, pos, state);
@@ -217,12 +209,12 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, @Nullable Direction dir) {
-        return (slot == 0 || slot == 1);
+        return (slot == 0 || slot == 1 || slot == 2);
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return slot == 2;
+        return slot == 3;
     }
 
     @Override
@@ -241,7 +233,7 @@ public class GeneratorBlockEntity extends BlockEntity implements ExtendedScreenH
 
     @Override
     public int[] getAvailableSlots(Direction side) {
-        return new int[]{2};
+        return new int[]{3};
     }
 
 }

@@ -1,6 +1,5 @@
 package net.furia.generator.screen;
 
-import net.furia.generator.GeneratorMod;
 import net.furia.generator.block.entity.GeneratorBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,15 +23,16 @@ public class GeneratorScreenHandler extends ScreenHandler {
 
     public GeneratorScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity, PropertyDelegate arrayPropertyDelegate) {
         super(ModScreenHandlers.GENERATOR_SCREEN_HANDLER, syncId);
-        checkSize(((Inventory) blockEntity), 3);
+        checkSize(((Inventory) blockEntity), 4);
         this.inventory = ((Inventory) blockEntity);
         this.propertyDelegate = arrayPropertyDelegate;
         this.blockEntity = (GeneratorBlockEntity) blockEntity;
 
         // add GUI slots
         this.addSlot(new Slot(this.inventory, 0, 62, 26));
-        this.addSlot(new Slot(this.inventory, 1, 98, 26));
-        this.addSlot(new OutputSlot(this.inventory, 2, 80, 54));
+        this.addSlot(new Slot(this.inventory, 1, 80, 44));
+        this.addSlot(new Slot(this.inventory, 2, 98, 26));
+        this.addSlot(new OutputSlot(this.inventory, 3, 80, 26));
 
         // player inventory + hotbar
         addPlayerInventory(playerInventory);

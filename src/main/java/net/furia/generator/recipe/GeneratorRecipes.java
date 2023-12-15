@@ -28,20 +28,20 @@ public class GeneratorRecipes implements Recipe<SimpleInventory> {
 
     @Override
     public boolean matches(SimpleInventory inventory, World world) {
-        if(world.isClient()) {
+        if (world.isClient()) {
             return false;
         }
 
-        return (recipeItems.get(0).test(inventory.getStack(0)) && recipeItems.get(1).test(inventory.getStack(1))) ||
-                (recipeItems.get(0).test(inventory.getStack(1)) && recipeItems.get(1).test(inventory.getStack(0)));
+        return  (recipeItems.get(0).test(inventory.getStack(0)) && recipeItems.get(1).test(inventory.getStack(2))) ||
+                (recipeItems.get(0).test(inventory.getStack(2)) && recipeItems.get(1).test(inventory.getStack(0)));
     }
 
     @Override
     public boolean isIgnoredInRecipeBook() {
-        // fixes the "[Render thread/WARN] (Minecraft) Unknown recipe category:" warning from Mojang hardcoding
+        // fixes the "[Render thread/WARN] (Minecraft) Unknown recipe category:" warning
+        // from Mojang hardcoding
         return true;
     }
-
 
     @Override
     public ItemStack craft(SimpleInventory inventory, DynamicRegistryManager registryManager) {
@@ -83,7 +83,9 @@ public class GeneratorRecipes implements Recipe<SimpleInventory> {
     }
 
     public static class Type implements RecipeType<GeneratorRecipes> {
-        private Type() { }
+        private Type() {
+        }
+
         public static final Type INSTANCE = new Type();
         public static final String ID = "generator_recipe";
     }
@@ -107,8 +109,7 @@ public class GeneratorRecipes implements Recipe<SimpleInventory> {
                 int time = JsonHelper.getInt(json, "time");
                 GeneratorMod.LOGGER.info("RECIPE INFO: " + id + " " + output + " " + inputs + " " + time);
                 return new GeneratorRecipes(id, output, inputs, time);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // avoid using the recipe if it's invalid
                 return new GeneratorRecipes(id, ItemStack.EMPTY, DefaultedList.ofSize(2, Ingredient.EMPTY), 0);
             }

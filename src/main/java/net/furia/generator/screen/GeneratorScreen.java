@@ -32,17 +32,6 @@ public class GeneratorScreen extends HandledScreen<GeneratorScreenHandler> {
         int y = (height - backgroundHeight) / 2;
 
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
-
-        // progress %
-        int progress = handler.getScaledPercentage();
-        Text progressText = Text.of(progress + "%");
-        // center align text
-        int textWidth = textRenderer.getWidth(progressText);
-        int textX = x + (backgroundWidth - textWidth) / 2;
-        int textY = y + 40;
-
-        context.drawText(textRenderer, progress + "%", textX, textY, 0x3F3F3F, false);
-
         // write if disabled
         if (handler.isDisabled()) {
             Text disabledText = Text.of("Disabled");
