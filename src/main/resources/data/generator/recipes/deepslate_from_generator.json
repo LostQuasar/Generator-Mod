@@ -5,15 +5,15 @@
       "item": "minecraft:lava_bucket"
     },
     {
-      "item": "minecraft:blue_ice"
+      "item": "minecraft:water_bucket"
     },
-    {
-      "item": "minecraft:soul_soil"
+    { 
+      "item": "minecraft:magma_block"
     }
   ],
   "time": 20,
   "output": {
     "count": 1,
-    "item": "minecraft:basalt"
+    "item": "minecraft:cobbled_deepslate"
   }
 }
